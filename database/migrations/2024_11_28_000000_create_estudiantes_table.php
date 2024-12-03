@@ -14,7 +14,12 @@ return new class extends Migration
         Schema::create('estudiantes', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->nullable(false);
+            $table->string('apellidos')->nullable(true);
+            $table->string('direccion')->nullable(true);
+            $table->integer('votos')->nullable(true);
+            $table->boolean('confirmado')->nullable(true);
             $table->timestamps();
+
         });
     }
 
