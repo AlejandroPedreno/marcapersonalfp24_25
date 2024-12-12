@@ -16,7 +16,7 @@ class CurriculoController extends Controller
     public function getShow($id)
     {
             return view('curriculos.show')
-                ->with('curriculos', Curriculo::findOrFail($id))
+                ->with('curriculo', Curriculo::findOrFail($id))
                 ->with('id', $id);
     }
 
@@ -28,7 +28,7 @@ class CurriculoController extends Controller
     public function getEdit($id)
     {
             return view('curriculos.edit')
-                ->with('curriculos', Curriculo::findOrFail($id))
+                ->with('curriculo', Curriculo::findOrFail($id))
                 ->with('id', $id);
     }
 

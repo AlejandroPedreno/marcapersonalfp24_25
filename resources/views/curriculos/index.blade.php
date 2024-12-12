@@ -4,7 +4,7 @@
 
 <div class="row">
 
-    @foreach ($curriculos as $key => $curriculo)
+    @foreach ($curriculos as $curriculo)
 
     <div class="col-4 col-6-medium col-12-small">
         <section class="box">
