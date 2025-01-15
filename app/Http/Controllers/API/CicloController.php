@@ -21,7 +21,6 @@ class CicloController extends Controller
         );
     }
 
-
     /**
      * Store a newly created resource in storage.
      */
@@ -61,7 +60,7 @@ class CicloController extends Controller
         try{
             $ciclo->delete();
             return response()->json(null, 204);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error: ' . $e->getMessage()
             ], 400);
