@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Middleware;
-
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,8 +26,18 @@ class ReactAdminResponse
 
         if($request->routeIs('*.index')) {
             abort_unless(property_exists($request->route()->controller, 'modelclass'), 500, "It must exists a modelclass property in the controller.");
-            $modelClassName = $request->route()->controller->modelclass;
+            abort_unless(property_exists($request->route()->controller, 'resourceClass'), 500, "It must exist a resourceClass property in the controller.");
+            $controller = $request->route()->controller;
+            $modelClassName = $controller->modelClass;
+            $resourceClassName = $controller->resourceClass;
             $response->header('X-Total-Count',$modelClassName::count());
+
+            return $resourceClassName->collection(
+            $modelClassName::orderBy($request->_sort ?? 'id', $request->_order ?? 'asc')
+            ->paginate($request->perPage)
+        ); //????
+
+
         }
         try {
             if(is_callable([$response, 'getData'])) {
@@ -40,4 +49,30 @@ class ReactAdminResponse
         } catch (\Throwable $th) { }
         return $response;
     }
+
+
+/* public function index(Request $request, $filterColumns)
+    {
+        $modelClassName = $request->route()->controller->modelclass;
+        $query = $modelClassName::query();
+
+        $filterValue = $request->q;
+
+        if ($filterValue) {
+            $query->where(function ($query) use ($filterValue, $filterColumns) {
+                foreach ($filterColumns as $column) {
+                    $query->orWhere($column, 'like', '%' . $filterValue . '%');
+                }
+            });
+        }
+
+        $sort = $request->_sort;
+        $order = $request->_order;
+        if ($sort) {
+            $query->orderBy($sort, $order);
+        }
+
+        return $query->paginate($request->perPage);
+    }
+}*/
 }
