@@ -9,10 +9,12 @@ class Competencias extends Model
 {
     use HasFactory;
 
+    protected $table = 'competencias';
+
     protected $fillable = [
         'id',
         'nombre',
         'color'
     ];
-    
+
 }
