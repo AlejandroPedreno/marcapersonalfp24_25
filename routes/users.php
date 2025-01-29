@@ -7,4 +7,5 @@ Route::group(['prefix' => 'users'], function(){
     Route::get('/show/{id}', [UserController::class, 'getShow'])->where('id', '[0-9]*');
     Route::get('/create', [UserController::class, 'getCreate']);
     Route::get('/edit/{id}', [UserController::class, 'getEdit'])->where('id', '[0-9]*');
+    Route::get('/users/count', [UserController::class, 'getCount']);
 });

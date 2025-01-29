@@ -31,6 +31,12 @@ class UserController extends Controller {
                 ->with('id', $id);
     }
 
+    public function getCount()
+    {
+        return view('users.count')
+            ->with('count', count($this->arrayUsers));
+    }
+
         private $arrayUsers = [
             [
                 'email' => 'user0@marcapersonalFP.es',
