@@ -15,6 +15,7 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\UsersCiclosController;
 use App\Models\UsersCiclos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Psr\Http\Message\ServerRequestInterface;
 use Tqdev\PhpCrudApi\Api;
@@ -25,6 +26,11 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function () {
+    Route::get('{tabla}/count', function ($tabla) {
+        return response()->json([
+            'count' => DB::table($tabla)->count()
+        ], 200);
+    });
     Route::apiResource('ciclos', CicloController::class);
     Route::apiResource('actividades', ActividadController::class)->parameters(['actividades' => 'actividad']);
     Route::apiResource('familias_profesionales', FamiliaProfesionalController::class)->parameters([
@@ -59,8 +65,6 @@ Route::any('/{any}', function (ServerRequestInterface $request) {
         $records = json_decode($response->getBody()->getContents())->records;
         $response = response()->json($records, 200, $headers = ['X-Total-Count' => count($records)]);
     } catch (\Throwable $th) {
-
     }
     return $response;
-
 })->where('any', '.*');

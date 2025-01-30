@@ -17,18 +17,20 @@ class ReactAdminResponse
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $request->merge(['perPage' => 10]);
-        if ($request->filled('_start')) {
-            if ($request->filled('_end')) {
-                $request->merge(['perPage' => 1 + $request->_end - $request->_start]);
+        if ($request->routeIs('*.index')) {
+            $request->merge(['perPage' => 10]);
+            if ($request->filled('_start')) {
+                if ($request->filled('_end')) {
+                    $request->merge(['perPage' => 1 + $request->_end - $request->_start]);
+                }
+                $request->merge(['page' => intval($request->_start / $request->perPage) + 1]);
             }
-            $request->merge(['page' => intval($request->_start / $request->perPage) + 1]);
+            $controller = $request->route()->getController();
+            $modelClassName = $controller->modelclass;
+            $query = self::applyFilter($request, $modelClassName::$filterColumns);
+            $query = self::applySort($request, $query);
+            $request->attributes->set('queryWithParameters', $query);
         }
-        $controller = $request->route()->getController();
-        $modelClassName = $controller->modelclass;
-        $query = self::applyFilter($request, $modelClassName::$filterColumns);
-        $query = self::applySort($request, $query);
-        $request->attributes->set('queryWithParameters', $query);
         $response = $next($request);
         if ($request->routeIs('*.index')) {
             abort_unless(property_exists($request->route()->controller, 'modelclass'), 500, "It must exists a modelclass property in the controller.");
