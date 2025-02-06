@@ -71,4 +71,10 @@ class ProyectoController extends Controller
             ], 400);
         }
     }
+
+    public function showProyectoCiclos($id)
+    {
+        $proyecto = Proyecto::find($id);
+        return $proyecto->ciclos;
+    }
 }
