@@ -35,6 +35,6 @@ class Proyecto extends Model
 
     public function ciclos(): BelongsToMany
     {
-        return $this->belongsToMany(Idiomas::class, 'proyectos_ciclos', 'proyecto_id', 'ciclo_id');
+        return $this->belongsToMany(Ciclo::class, 'proyectos_ciclos', 'proyecto_id', 'ciclo_id');
     }
 }

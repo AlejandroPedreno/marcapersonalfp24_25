@@ -19,7 +19,9 @@ class ProyectosCiclosSeeder extends Seeder
         $proyectos = DB::table('proyectos')->get();
 
         foreach ($ciclos as $ciclo) {
-            foreach ($proyectos as $proyecto) {
+            $numero = rand(0, 2);
+            for ($i = 0; $i < $numero; $i++) {
+                $proyecto = $proyectos->random();
                 DB::table('proyectos_ciclos')->insert([
                     'ciclo_id' => $ciclo->id,
                     'proyecto_id' => $proyecto->id,
